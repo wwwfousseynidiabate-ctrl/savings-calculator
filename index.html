@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savings Calculator</title>
+<style>
+body{font-family:Arial;background:#f0fdf4;padding:25px}
+main{max-width:500px;margin:auto;background:white;padding:30px;border-radius:16px}
+input{width:100%;padding:13px;margin:10px 0;box-sizing:border-box;border:1px solid #86efac;border-radius:8px}
+button{width:100%;background:#15803d;color:white;border:0;padding:14px;border-radius:8px;cursor:pointer}
+#result{background:#dcfce7;padding:20px;border-radius:10px;margin-top:20px;white-space:pre-line;line-height:2}
+</style>
+</head>
+<body>
+<main>
+<h1>Savings Calculator</h1>
+<p>Plan your future savings.</p>
+<label>Current Savings</label>
+<input id="initial" type="number" min="0" value="0">
+<label>Monthly Savings</label>
+<input id="monthly" type="number" min="0" placeholder="Monthly amount">
+<label>Number of Months</label>
+<input id="months" type="number" min="1" placeholder="Months">
+<button onclick="calculate()">Calculate Savings</button>
+<div id="result">Your savings estimate will appear here.</div>
+<p>Calculation excludes interest and investment returns.</p>
+</main>
+<script>
+function calculate(){
+ const i=document.getElementById("initial");
+ const m=document.getElementById("monthly");
+ const n=document.getElementById("months");
+ const initial=Number(i.value);
+ const monthly=Number(m.value);
+ const months=Number(n.value);
+ const out=document.getElementById("result");
+ if(i.value===""||m.value===""||initial<0||monthly<0||months<1||!Number.isInteger(months)){
+  out.textContent="Please enter valid values.";
+  return;
+ }
+ const added=monthly*months;
+ out.textContent="Current Savings: "+initial.toFixed(2)+
+ "\nAdditional Savings: "+added.toFixed(2)+
+ "\nTotal Savings: "+(initial+added).toFixed(2);
+}
+</script>
+</body>
+</html>
