@@ -2,47 +2,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Savings Calculator</title>
 <style>
 body{font-family:Arial;background:#f0fdf4;padding:25px}
-main{max-width:500px;margin:auto;background:white;padding:30px;border-radius:16px}
-input{width:100%;padding:13px;margin:10px 0;box-sizing:border-box;border:1px solid #86efac;border-radius:8px}
-button{width:100%;background:#15803d;color:white;border:0;padding:14px;border-radius:8px;cursor:pointer}
-#result{background:#dcfce7;padding:20px;border-radius:10px;margin-top:20px;white-space:pre-line;line-height:2}
+main{max-width:500px;margin:auto;background:white;padding:25px;border-radius:15px}
+input{width:100%;padding:12px;margin:10px 0;box-sizing:border-box}
+button{padding:12px 18px;background:#15803d;color:white;border:0;border-radius:7px;cursor:pointer}
+#result{padding:18px;background:#dcfce7;margin-top:15px;border-radius:8px}
 </style>
 </head>
 <body>
 <main>
 <h1>Savings Calculator</h1>
-<p>Plan your future savings.</p>
-<label>Current Savings</label>
-<input id="initial" type="number" min="0" value="0">
-<label>Monthly Savings</label>
-<input id="monthly" type="number" min="0" placeholder="Monthly amount">
-<label>Number of Months</label>
-<input id="months" type="number" min="1" placeholder="Months">
+<input id="initial" type="number" min="0" placeholder="Initial savings">
+<input id="monthly" type="number" min="0" placeholder="Monthly deposit">
+<input id="rate" type="number" min="0" max="100" step="any" placeholder="Annual interest rate (%)">
+<input id="years" type="number" min="1" max="100" placeholder="Years">
 <button onclick="calculate()">Calculate Savings</button>
-<div id="result">Your savings estimate will appear here.</div>
-<p>Calculation excludes interest and investment returns.</p>
+<div id="result">Your projection will appear here.</div>
 </main>
 <script>
 function calculate(){
- const i=document.getElementById("initial");
- const m=document.getElementById("monthly");
- const n=document.getElementById("months");
- const initial=Number(i.value);
- const monthly=Number(m.value);
- const months=Number(n.value);
+ const initial=Number(document.getElementById("initial").value);
+ const monthly=Number(document.getElementById("monthly").value);
+ const rate=Number(document.getElementById("rate").value);
+ const years=Number(document.getElementById("years").value);
  const out=document.getElementById("result");
- if(i.value===""||m.value===""||initial<0||monthly<0||months<1||!Number.isInteger(months)){
-  out.textContent="Please enter valid values.";
+ if(initial<0||monthly<0||rate<0||rate>100||years<=0||
+ !document.getElementById("years").value){
+  out.textContent="Enter valid savings information.";
   return;
  }
- const added=monthly*months;
- out.textContent="Current Savings: "+initial.toFixed(2)+
- "\nAdditional Savings: "+added.toFixed(2)+
- "\nTotal Savings: "+(initial+added).toFixed(2);
+ const months=years*12;
+ const r=rate/1200;
+ let balance=initial;
+ for(let i=0;i<months;i++){
+  balance=balance*(1+r)+monthly;
+ }
+ const invested=initial+monthly*months;
+ out.textContent=`Estimated balance: ${balance.toFixed(2)} | Total deposits: ${invested.toFixed(2)} | Estimated interest: ${(balance-invested).toFixed(2)}`;
 }
 </script>
 </body>
